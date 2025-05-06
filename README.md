@@ -43,7 +43,7 @@ The **eCharts Dashboard Endpoint** is a .NET-based application designed to manag
    ```bash
    dotnet run
 
-Access the API at: http://localhost:<port>/
+Access the API at: http://localhost:5275/api
 
 ---
 
