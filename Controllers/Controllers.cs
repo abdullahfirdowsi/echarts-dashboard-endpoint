@@ -15,10 +15,10 @@ namespace InternsApi.Controllers
         private readonly ExcelService _excelService;
         private readonly ILogger<InternsController> _logger;
 
-        public InternsController(ILogger<InternsController> logger = null)
+        public InternsController(ILogger<InternsController>? logger = null)
         {
             _excelService = new ExcelService();
-            _logger = logger ?? (ILogger<InternsController>)new LoggerFactory().CreateLogger<InternsController>();
+            _logger = logger ?? new LoggerFactory().CreateLogger<InternsController>();
         }
 
         [HttpGet]
@@ -31,13 +31,13 @@ namespace InternsApi.Controllers
                 // Try multiple potential file paths
                 string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Data", "InternsData.xlsx");
                 
-                if (!File.Exists(filePath))
+                if (!System.IO.File.Exists(filePath))
                 {
                     _logger.LogWarning($"Excel file not found at primary path: {filePath}");
                     
                     // Try alternative locations
                     string altPath = Path.Combine(AppContext.BaseDirectory, "Data", "InternsData.xlsx");
-                    if (File.Exists(altPath))
+                    if (System.IO.File.Exists(altPath))
                     {
                         _logger.LogInformation($"Found Excel file at alternative path: {altPath}");
                         filePath = altPath;
