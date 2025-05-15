@@ -1,20 +1,19 @@
 # Build stage
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
-WORKDIR /src
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /app
 
-# Copy csproj and restore dependencies
-COPY ["InternsApi.csproj", "./"]
-RUN dotnet restore
+# Copy everything first to preserve folder structure
+COPY . ./
 
-# Copy the rest of the source code
-COPY . .
+# Restore dependencies
+RUN dotnet restore "InternsApi.csproj"
 
 # Build and publish the application
 RUN dotnet build "InternsApi.csproj" -c Release -o /app/build
 RUN dotnet publish "InternsApi.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS runtime
 WORKDIR /app
 
 # Set environment variables
